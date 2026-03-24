@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from pathlib import Path
 
 def pobierz_ustalenia_mpzp(teryt):
     
@@ -34,6 +35,15 @@ def pobierz_ustalenia_mpzp(teryt):
         mpzp_soup = BeautifulSoup(mpzp_response.text, 'html.parser')
 
         czysty_tekst = mpzp_soup.get_text(separator='\n', strip=True)
+
+        base_dir = Path(__file__).resolve().parent
+        folder_data = base_dir / "data"
+        folder_data.mkdir(exist_ok=True)
+        
+        nazwa_pliku = f"mpzp_{teryt.replace('.', '_').replace('/', '_')}.txt"
+        sciezka_zapisu = folder_data / nazwa_pliku
+        
+        sciezka_zapisu.write_text(czysty_tekst, encoding="utf-8")
         
         return czysty_tekst
         

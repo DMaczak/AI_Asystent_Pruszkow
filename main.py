@@ -25,8 +25,13 @@ def main():
             print("\nPróbuję pobrać ustalenia MPZP z serwera...")
             wynik_mpzp = pobierz_ustalenia_mpzp(teryt)
             
-            print("\n--- WYNIK ANALIZY MPZP ---")
-            print(wynik_mpzp[:8000] + "...")
+            # Dodajemy sprawdzenie, czy wystąpił błąd
+            if "błąd" in wynik_mpzp.lower() or "nie znaleziono" in wynik_mpzp.lower():
+                print(f"Coś poszło nie tak: {wynik_mpzp}")
+            else:
+                print("\n✅ --- POBRANO WYNIK ANALIZY MPZP I ZAPISANO DO PLIKU ---")
+                # Jeśli chcesz zobaczyć kawałek tekstu w terminalu, możesz odkomentować linię niżej:
+                # print(wynik_mpzp[:500] + "...")
 
         else:
             print("\n Nie udalo sie ustalic numeru TERYT. Nie ma takiej dzialki")
