@@ -26,7 +26,7 @@ def adres_na_wspolrzedne(adres):
         lon = dane[0]['lon']
         print(f"Znaleziono punkt GPS: Szer:{lat}, Dług:{lon}")
         return lat, lon
-        
+    
     except Exception as e:
         print(f"Blad podczas wyszukiwania adresu: {e}")
         return None, None
@@ -52,3 +52,4 @@ def wspolrzedne_na_teryt(lat, lon):
     except Exception as e:
         print(f"Blad podczas odpytywania GUGiK: {e}")
         return None
+    
