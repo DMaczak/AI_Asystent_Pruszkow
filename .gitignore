@@ -1,9 +1,9 @@
-# Klucze i sekrety
+# Klucze
 .env
 
 # Pobrane dane i bazy
 data/
 
-# Pliki tymczasowe Pythona
+# TEMPy
 __pycache__/
 *.pyc

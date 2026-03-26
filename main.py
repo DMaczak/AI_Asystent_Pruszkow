@@ -1,6 +1,7 @@
 from pobierz_warunki_techniczne import pobierz_warunki_techniczne
 from adres_do_tetryt import adres_na_wspolrzedne, wspolrzedne_na_teryt
 from mpzp_scraper import pobierz_ustalenia_mpzp
+from asystent_AI import uruchomChat
 
 def main():
     print("="*60)
@@ -29,8 +30,9 @@ def main():
                 print(f"Coś poszło nie tak: {wynik_mpzp}")
             else:
                 print("\n POBRANO WYNIK ANALIZY MPZP I ZAPISANO DO PLIKU ")
-               
 
+            uruchomChat(teryt)
+               
         else:
             print("\n Nie udalo sie ustalic numeru TERYT. Nie ma takiej dzialki")
     else:
