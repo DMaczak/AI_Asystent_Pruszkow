@@ -51,3 +51,5 @@ def pobierz_ustalenia_mpzp(teryt):
         return f"Błąd sieci podczas pobierania danych: {e}"
     except Exception as e:
         return f"Wystąpił nieoczekiwany błąd: {e}"
+    
+    
