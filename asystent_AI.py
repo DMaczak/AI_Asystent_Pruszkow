@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from smolagents import CodeAgent, OpenAIServerModel, tool
+from smolagents import ToolCallingAgent, OpenAIServerModel, tool
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from baza_zapytan import inicjalizuj_baze, zapisz_rozmowe
@@ -72,8 +72,12 @@ def czytajMPZP(teryt:str) -> str:
         
     return sciezka_pliku.read_text(encoding="utf-8")
 
-model = OpenAIServerModel(model_id="?????")
-agent = CodeAgent(tools=[czytajMPZP, czytajWT], model=model, add_base_tools=False)
+model = OpenAIServerModel(model_id="gpt-4o-mini")
+agent = ToolCallingAgent(
+    tools=[czytajMPZP, czytajWT], 
+    model=model,
+    verbosity_level=0  # To wyłącza ściany tekstu i ramki w konsoli!
+)
 
 def uruchomChat(teryt):
 
@@ -101,14 +105,14 @@ def uruchomChat(teryt):
     zapisz_rozmowe(teryt, "Autogeneracja: Podsumowanie działki", podsumowanie)
 
     while True:
-        pytanie = input("\n👤 Wpisz swoje pytanie lub wpisz 'exit' aby wyjść: ")
+        pytanie = input("\nWpisz swoje pytanie lub wpisz 'exit' aby wyjść: ")
         if pytanie.lower() in ['exit', 'wyjscie', 'quit']:
             break
             
         if not pytanie.strip():
             continue
 
-        print("\n🤖 Agent myśli...")
+        print("\nAgent myśli...")
         odpowiedz = agent.run(pytanie)
         
         print("\n" + "="*60)

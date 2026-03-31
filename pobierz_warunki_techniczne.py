@@ -14,7 +14,7 @@ def pobierz_warunki_techniczne():
     if  sciezka_zapisu.exists():
         print(f"Plik {sciezka_zapisu} już istnieje")
         return
-
+        
     print("Pobieranie Warunków Technicznych...")
     
     try:

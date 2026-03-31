@@ -41,3 +41,5 @@ def stworz_baze_wektorowa():
         persist_directory=str(folder_bazy)
     )   
     print("\nBaza została utworzona")
+if __name__ == "__main__":
+    stworz_baze_wektorowa()
