@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from smolagents import CodeAgent, OpenAIServerModel, tool
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
+from baza_zapytan import inicjalizuj_baze, zapisz_rozmowe
 
 load_dotenv()
 if not os.getenv("OPENAI_API_KEY"):
@@ -76,13 +77,14 @@ agent = CodeAgent(tools=[czytajMPZP, czytajWT], model=model, add_base_tools=Fals
 
 def uruchomChat(teryt):
 
+    inicjalizuj_baze()
+
     print("\n"+"="*60)
     print("========= WYSZUKIWANIE INFORMACJI PROSZE CZEKAC... =========")
     print("\n"+"="*60)
 
     prompt_startowy = f"""
-    Użyj narzędzia czytajMPZP dla teryt: {teryt}. Jezeli danych informacji
-    nie ma w czytajMPZP poszukaj w czytajWT
+    Użyj narzędzia czytajMPZP dla teryt: {teryt}. 
     Następnie wypisz w bardzo krótkich, zwięzłych słowach (w punktach) 
     najważniejsze parametry dla tej działki:
     1. Główne przeznaczenie terenu.
@@ -91,19 +93,26 @@ def uruchomChat(teryt):
     Jeśli jakiejś informacji nie ma, napisz 'Brak danych'
     """
 
-    print("Agent mysli...")
+    print("Agent myśli...")
     podsumowanie = agent.run(prompt_startowy)
     print("===== Znalezione podstawowe informacje o dzialce ===== ")
     print(podsumowanie)
+    
+    zapisz_rozmowe(teryt, "Autogeneracja: Podsumowanie działki", podsumowanie)
 
     while True:
-        pytanie = input("\n Wpisz swoje pytanie lub wpisz 'exit' aby wyjsc")
-        if pytanie.lower() in ['exit']:
+        pytanie = input("\n👤 Wpisz swoje pytanie lub wpisz 'exit' aby wyjść: ")
+        if pytanie.lower() in ['exit', 'wyjscie', 'quit']:
             break
+            
+        if not pytanie.strip():
+            continue
 
+        print("\n🤖 Agent myśli...")
         odpowiedz = agent.run(pytanie)
-        print("\n"+"="*60)
-        print("Agent mysli...")
-
-        print("\nODPOWIEDZ:")
+        
+        print("\n" + "="*60)
+        print("ODPOWIEDŹ: ")
         print(odpowiedz)
+        print("="*60)
+        zapisz_rozmowe(teryt, pytanie, odpowiedz)
